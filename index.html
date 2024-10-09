@@ -118,15 +118,16 @@
         #controls label {
             display: block;
             color: #8d8d8d;
-            margin: 6px 0;
+            margin: 6px 0 5px 0;
             font-size: 12px;
+            text-align: left;
         }
         #controls .input-row {
             display: flex;
             align-items: center;
             margin-bottom: 10px;
         }
-        #controls input[type="number"] {
+        #betAmount {
             width: 60%;
             padding: 5px;
             border-radius: 5px;
@@ -154,8 +155,15 @@
             background-color: #3b3b3b;
         }
         #controls #mines {
-            width: 100%;
+            width: calc(100% - 20px);
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: none;
+            font-size: 14px;
+            background-color: #2d2d2d;
+            color: #ffffff;
             margin-bottom: 10px;
+            box-sizing: border-box;
         }
         .profit-info {
             display: flex;
@@ -189,7 +197,7 @@
     </style>
 </head>
 <body>
-    <div id="header">DICEGAMBLE</div>
+    <div id="header">MINES</div>
 
     <div id="balance-container">
         <div id="balance-label">BALANCE</div>
