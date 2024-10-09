@@ -7,146 +7,154 @@
     <style>
         /* Overall Page Styling */
         body {
-            background-color: #2a2a2a;
+            background-color: #141414;
             font-family: Arial, sans-serif;
             color: #ffffff;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 10px;
-        }
-        h1 {
-            color: #ffffff;
-            margin: 5px;
-            font-size: 18px;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
         }
 
         /* Header Logo */
         #header {
             color: #ffffff;
-            font-size: 18px;
+            font-size: 24px;
             margin-bottom: 15px;
+            text-transform: uppercase;
+            font-weight: bold;
         }
 
         /* Balance Display */
         #balance-container {
-            background-color: #3d3d3d;
-            border-radius: 15px;
-            padding: 5px 15px;
-            margin-bottom: 15px;
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            padding: 10px 20px;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
-            font-size: 14px;
+            font-size: 16px;
         }
         #balance-label {
-            margin-right: 5px;
+            margin-right: 10px;
             font-weight: bold;
         }
         #balance-amount {
-            font-size: 16px;
-            color: #cccccc;
+            font-size: 18px;
+            color: #8d8d8d;
         }
 
         /* Game Grid */
         #game {
             display: grid;
-            grid-template-columns: repeat(5, 40px);
-            gap: 5px;
-            margin-bottom: 10px;
+            grid-template-columns: repeat(5, 60px);
+            gap: 10px;
+            margin-bottom: 20px;
         }
         .cell {
-            width: 40px;
-            height: 40px;
-            background-color: #5e5e5e;
-            border-radius: 5px;
+            width: 60px;
+            height: 60px;
+            background-color: #2d2d2d;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            font-size: 18px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
-        .cell.mine {
-            animation: shake 0.3s;
-            background-color: #a83232;
+            font-size: 20px;
+            color: #ffffff;
+            transition: transform 0.2s, background-color 0.2s;
         }
         .cell.safe {
-            background-color: #4d8a4d;
+            background-color: #1e6f1e;
+            color: #4caf50;
+            transform: scale(1.1);
         }
-        @keyframes shake {
-            0% { transform: translate(1px, 1px) rotate(0deg); }
-            25% { transform: translate(-1px, -2px) rotate(-1deg); }
-            50% { transform: translate(-3px, 0px) rotate(1deg); }
-            75% { transform: translate(1px, 2px) rotate(0deg); }
-            100% { transform: translate(1px, -1px) rotate(-1deg); }
+        .cell.mine {
+            background-color: #6f1e1e;
+            color: #e74c3c;
+            transform: scale(1.1);
         }
 
-        /* Status Message */
-        #status {
-            font-size: 14px;
-            margin-bottom: 10px;
-            color: #ffde00;
+        /* Status Message Overlay */
+        #status-overlay {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.85);
+            color: #ffffff;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 18px;
+            border: 2px solid #4caf50;
         }
 
         /* Control Panel */
         #controls {
-            background-color: #3d3d3d;
+            background-color: #1e1e1e;
             border-radius: 10px;
-            padding: 10px;
+            padding: 15px;
             width: 100%;
-            max-width: 250px;
+            max-width: 300px;
             text-align: center;
         }
         #controls label {
             display: block;
-            color: #cccccc;
-            margin: 3px 0;
-            font-size: 12px;
-            text-align: left;
+            color: #8d8d8d;
+            margin: 8px 0;
+            font-size: 14px;
         }
         #controls input[type="number"] {
-            width: calc(100% - 10px);
-            padding: 5px;
+            width: calc(100% - 20px);
+            padding: 8px;
             border-radius: 5px;
             border: none;
-            font-size: 14px;
-            margin-bottom: 10px;
-            background-color: #5e5e5e;
+            font-size: 16px;
+            margin-bottom: 15px;
+            background-color: #2d2d2d;
             color: #ffffff;
         }
         .multiplier-buttons {
             display: flex;
             justify-content: space-between;
-            margin-top: 3px;
+            margin: 10px 0;
         }
         .multiplier-buttons button {
-            background-color: #5e5e5e;
+            background-color: #2d2d2d;
             border: none;
-            padding: 5px 10px;
-            font-size: 12px;
+            padding: 8px 16px;
+            font-size: 14px;
             border-radius: 5px;
-            color: #ffffff;
+            color: #8d8d8d;
             cursor: pointer;
+            transition: background-color 0.2s;
         }
-        #controls #profit, #controls #profit-amount {
-            font-size: 12px;
-            color: #cccccc;
+        .multiplier-buttons button:hover {
+            background-color: #3b3b3b;
         }
         #controls button#bet, #controls button#cashout {
-            background-color: #5e5e5e;
+            background-color: #4caf50;
             border: none;
-            padding: 7px 15px;
-            font-size: 14px;
-            border-radius: 8px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
             font-weight: bold;
             color: #ffffff;
             cursor: pointer;
             width: 100%;
+            margin-top: 10px;
+            transition: background-color 0.2s;
+        }
+        #controls button#cashout {
+            background-color: #e74c3c;
             margin-top: 5px;
         }
-        #controls button:hover {
-            background-color: #4b4b4b;
+        #controls button#bet:hover, #controls button#cashout:hover {
+            background-color: #3a7e3a;
         }
     </style>
 </head>
@@ -158,7 +166,7 @@
         <div id="balance-amount">$100.00</div>
     </div>
 
-    <div id="status">Start the game by placing a bet.</div>
+    <div id="status-overlay"></div>
 
     <div id="game"></div>
 
@@ -184,7 +192,7 @@
 
     <script>
         const balanceDisplay = document.getElementById('balance-amount');
-        const statusDisplay = document.getElementById('status');
+        const statusOverlay = document.getElementById('status-overlay');
         const profitDisplay = document.getElementById('profit');
         const profitAmountDisplay = document.getElementById('profit-amount');
         const gameSize = 5;
@@ -198,6 +206,9 @@
 
         let balance = 100;
         let grid, revealed, betAmount, multiplier, mines;
+        let gameActive = false;
+
+        renderGrid();
 
         function updateBalance(amount) {
             balance = amount;
@@ -206,7 +217,7 @@
 
         function startGame() {
             if (betAmountInput.value <= 0 || betAmountInput.value > balance) {
-                statusDisplay.textContent = 'Invalid bet amount';
+                showStatus('Invalid bet amount');
                 return;
             }
 
@@ -215,9 +226,10 @@
             balance -= betAmount;
             updateBalance(balance);
 
-            statusDisplay.textContent = `Game started with ${mines} mines. Good luck!`;
+            showStatus(`Game started with ${mines} mines. Good luck!`);
             multiplier = 1;
             updateProfit();
+            gameActive = true;
 
             grid = Array.from({ length: gameSize }, () => Array(gameSize).fill(false));
             revealed = Array.from({ length: gameSize }, () => Array(gameSize).fill(false));
@@ -241,7 +253,9 @@
                 for (let col = 0; col < gameSize; col++) {
                     const cell = document.createElement('div');
                     cell.className = 'cell';
-                    cell.onclick = () => revealCell(row, col, cell);
+                    cell.onclick = () => {
+                        if (gameActive) revealCell(row, col, cell);
+                    };
                     gameElement.appendChild(cell);
                 }
             }
@@ -251,11 +265,11 @@
             if (grid[row][col]) {
                 cell.classList.add('mine');
                 cell.innerHTML = '💣';
-                statusDisplay.textContent = 'Game Over! You hit a mine.';
+                showStatus('Game Over! You hit a mine.', true);
                 endGame(false);
             } else {
                 cell.classList.add('safe');
-                cell.innerHTML = '✔️';
+                cell.innerHTML = '💎';
                 revealed[row][col] = true;
                 multiplier += 0.2;
                 updateProfit();
@@ -277,11 +291,18 @@
             const profit = betAmount * multiplier;
             balance += profit;
             updateBalance(balance);
-            statusDisplay.textContent = `Cashed out at ${multiplier.toFixed(2)}x for $${profit.toFixed(2)}.`;
+            showStatus(`Cashed out at ${multiplier.toFixed(2)}x for $${profit.toFixed(2)}.`);
             toggleButtons(false);
         };
 
+        function showStatus(message, gameOver = false) {
+            statusOverlay.style.display = 'block';
+            statusOverlay.textContent = message;
+            if (gameOver) setTimeout(() => statusOverlay.style.display = 'none', 2000);
+        }
+
         function endGame(won) {
+            gameActive = false;
             toggleButtons(false);
         }
 
