@@ -193,8 +193,8 @@
     </div>
 
     <!-- Sound effects -->
-    <audio id="safeSound" src="safe.mp3" volume="0.2"></audio> <!-- Set volume to 20% -->
-    <audio id="mineSound" src="mine.mp3"></audio>
+    <audio id="safeSound" src="assets/safe.wav" volume="0.2"></audio> <!-- Set volume to 20% -->
+    <audio id="mineSound" src="assets/mine.wave"></audio>
 
     <script>
         const balanceDisplay = document.getElementById('balance-amount');
@@ -212,8 +212,8 @@
         const safeSound = document.getElementById('safeSound');
         const mineSound = document.getElementById('mineSound');
 
-        const diamondIcon = 'diamond.png'; // Place your diamond icon image here
-        const bombIcon = 'bomb.png'; // Place your bomb icon image here
+        const diamondIcon = 'assets/diamond.png'; // Place your diamond icon image here
+        const bombIcon = 'assets/bomb.png'; // Place your bomb icon image here
 
         let balance = 100;
         let grid, revealed, betAmount, multiplier, mines;
