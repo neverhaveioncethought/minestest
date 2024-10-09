@@ -121,20 +121,24 @@
             margin: 6px 0;
             font-size: 12px;
         }
+        #controls .input-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
         #controls input[type="number"] {
-            width: calc(100% - 15px);
+            width: 60%;
             padding: 5px;
             border-radius: 5px;
             border: none;
             font-size: 14px;
-            margin-bottom: 10px;
             background-color: #2d2d2d;
             color: #ffffff;
+            margin-right: 5px;
         }
         .multiplier-buttons {
             display: flex;
-            justify-content: space-between;
-            margin: 5px 0;
+            gap: 5px;
         }
         .multiplier-buttons button {
             background-color: #2d2d2d;
@@ -152,19 +156,18 @@
         #controls button#bet, #controls button#cashout {
             background-color: #4caf50;
             border: none;
-            padding: 8px 15px;
+            padding: 5px 10px;
             font-size: 14px;
             border-radius: 5px;
             font-weight: bold;
             color: #ffffff;
             cursor: pointer;
-            width: 100%;
+            width: 80%;
             margin-top: 8px;
             transition: background-color 0.2s;
         }
         #controls button#cashout {
             background-color: #e74c3c;
-            margin-top: 5px;
         }
         #controls button#bet:hover, #controls button#cashout:hover {
             background-color: #3a7e3a;
@@ -172,7 +175,7 @@
     </style>
 </head>
 <body>
-    <div id="header">DICEGAMBLE</div>
+    <div id="header">MINES</div>
 
     <div id="balance-container">
         <div id="balance-label">BALANCE</div>
@@ -186,11 +189,12 @@
 
     <div id="controls">
         <label for="betAmount">Bet Amount</label>
-        <input type="number" id="betAmount" value="1" min="1" step="0.01">
-
-        <div class="multiplier-buttons">
-            <button id="halfBet">1/2</button>
-            <button id="doubleBet">2x</button>
+        <div class="input-row">
+            <input type="number" id="betAmount" value="1" min="1" step="0.01">
+            <div class="multiplier-buttons">
+                <button id="halfBet">1/2</button>
+                <button id="doubleBet">2x</button>
+            </div>
         </div>
 
         <label for="mines">Mines</label>
@@ -239,13 +243,16 @@
         }
 
         function startGame() {
-            if (betAmountInput.value <= 0 || betAmountInput.value > balance) {
+            // Reset the overlay on new game start
+            statusOverlay.classList.remove('show');
+            betAmount = parseFloat(betAmountInput.value);
+            mines = parseInt(minesInput.value);
+
+            if (betAmount <= 0 || betAmount > balance) {
                 showStatus('Invalid bet amount');
                 return;
             }
 
-            betAmount = parseFloat(betAmountInput.value);
-            mines = parseInt(minesInput.value);
             balance -= betAmount;
             updateBalance(balance);
 
@@ -255,6 +262,7 @@
 
             grid = Array.from({ length: gameSize }, () => Array(gameSize).fill(false));
             revealed = Array.from({ length: gameSize }, () => Array(gameSize).fill(false));
+
             let minesPlaced = 0;
             while (minesPlaced < mines) {
                 const row = Math.floor(Math.random() * gameSize);
