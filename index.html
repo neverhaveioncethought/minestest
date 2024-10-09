@@ -52,6 +52,7 @@
             grid-template-columns: repeat(5, 45px);
             gap: 8px;
             margin-bottom: 15px;
+            position: relative;
         }
         .cell {
             width: 45px;
@@ -91,6 +92,7 @@
             text-align: center;
             font-size: 16px;
             border: 2px solid #4caf50;
+            z-index: 10;
         }
 
         /* Control Panel */
@@ -166,9 +168,9 @@
         <div id="balance-amount">$100.00</div>
     </div>
 
-    <div id="status-overlay"></div>
-
-    <div id="game"></div>
+    <div id="game">
+        <div id="status-overlay"></div>
+    </div>
 
     <div id="controls">
         <label for="betAmount">Bet Amount</label>
@@ -191,8 +193,8 @@
     </div>
 
     <!-- Sound effects -->
-    <audio id="safeSound" src="assets/safe.wav"></audio>
-    <audio id="mineSound" src="assets/mine.wav"></audio>
+    <audio id="safeSound" src="safe.mp3" volume="0.2"></audio> <!-- Set volume to 20% -->
+    <audio id="mineSound" src="mine.mp3"></audio>
 
     <script>
         const balanceDisplay = document.getElementById('balance-amount');
@@ -210,8 +212,8 @@
         const safeSound = document.getElementById('safeSound');
         const mineSound = document.getElementById('mineSound');
 
-        const diamondIcon = 'assets/diamond.png'; // Place your diamond icon image here
-        const bombIcon = 'assets/bomb.png'; // Place your bomb icon image here
+        const diamondIcon = 'diamond.png'; // Place your diamond icon image here
+        const bombIcon = 'bomb.png'; // Place your bomb icon image here
 
         let balance = 100;
         let grid, revealed, betAmount, multiplier, mines;
@@ -235,7 +237,6 @@
             balance -= betAmount;
             updateBalance(balance);
 
-            showStatus(`Game started with ${mines} mines. Good luck!`);
             multiplier = 1;
             updateProfit();
             gameActive = true;
@@ -257,7 +258,7 @@
         }
 
         function renderGrid() {
-            gameElement.innerHTML = '';
+            gameElement.innerHTML = '<div id="status-overlay"></div>'; // Reset grid and re-add overlay
             for (let row = 0; row < gameSize; row++) {
                 for (let col = 0; col < gameSize; col++) {
                     const cell = document.createElement('div');
@@ -281,6 +282,7 @@
                 cell.classList.add('safe');
                 cell.innerHTML = `<img src="${diamondIcon}" alt="Safe">`;
                 revealed[row][col] = true;
+                safeSound.volume = 0.2; // Set the volume to 20%
                 safeSound.play();
                 multiplier += 0.2;
                 updateProfit();
