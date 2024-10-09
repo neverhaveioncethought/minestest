@@ -12,13 +12,14 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            height: 100vh;
+            justify-content: flex-start;
+            min-height: 100vh;
             margin: 0;
+            padding-top: 20px;
         }
         #header {
             color: #ffffff;
-            font-size: 20px;
+            font-size: 24px;
             margin-bottom: 10px;
             text-transform: uppercase;
             font-weight: bold;
@@ -27,31 +28,33 @@
             background-color: #1e1e1e;
             border-radius: 10px;
             padding: 5px 15px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
-            font-size: 14px;
+            justify-content: center;
+            font-size: 16px;
         }
         #balance-label {
             margin-right: 5px;
             font-weight: bold;
         }
-        #balance-amount {
-            font-size: 16px;
-            color: #8d8d8d;
-        }
         #game-container {
-            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
         }
         #game {
             display: grid;
-            grid-template-columns: repeat(5, 45px);
-            gap: 8px;
-            margin-bottom: 15px;
+            grid-template-columns: repeat(5, 50px);
+            gap: 10px;
+            margin-top: 20px;
         }
         .cell {
-            width: 45px;
-            height: 45px;
+            width: 50px;
+            height: 50px;
+            background-color: #2d2d2d;
             border-radius: 8px;
             display: flex;
             align-items: center;
@@ -68,145 +71,86 @@
             background-color: transparent;
             border-color: #6f1e1e;
         }
-        #status-overlay {
-            display: none;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: rgba(0, 0, 0, 0.85);
-            color: #ffffff;
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            font-size: 18px;
-            border: 2px solid #4caf50;
-            z-index: 100;
-            width: 90%;
-            max-width: 220px;
-            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
-            transition: opacity 0.3s ease;
-            opacity: 0;
-        }
-        #status-overlay.show {
-            display: block;
-            opacity: 1;
-        }
         #controls {
             background-color: #1e1e1e;
             border-radius: 8px;
-            padding: 10px;
-            width: 100%;
-            max-width: 220px;
+            padding: 15px;
+            width: 250px;
             text-align: center;
+            margin-bottom: 20px;
         }
         #controls label {
             display: block;
-            color: #8d8d8d;
-            margin: 6px 0 3px 5px;
-            font-size: 12px;
             text-align: left;
+            color: #8d8d8d;
+            margin: 10px 0 5px 0;
+            font-size: 14px;
         }
         #controls input[type="number"] {
-            width: 60%;
-            padding: 5px;
+            width: 100%;
+            padding: 8px;
             border-radius: 5px;
             border: none;
-            font-size: 14px;
-            background-color: #2d2d2d;
-            color: #ffffff;
-            margin-right: 5px;
-        }
-        .multiplier-buttons {
-            display: flex;
-            gap: 5px;
-        }
-        .multiplier-buttons button {
-            background-color: #2d2d2d;
-            border: none;
-            padding: 5px 10px;
-            font-size: 12px;
-            border-radius: 5px;
-            color: #8d8d8d;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-        .multiplier-buttons button:hover {
-            background-color: #3b3b3b;
-        }
-        #controls #mines {
-            width: calc(100% - 10px);
-            padding: 5px;
-            border-radius: 5px;
-            border: none;
-            font-size: 14px;
             background-color: #2d2d2d;
             color: #ffffff;
             margin-bottom: 10px;
         }
-        .profit-info {
+        .multiplier-buttons {
             display: flex;
             justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .multiplier-buttons button {
+            flex: 1;
+            background-color: #2d2d2d;
+            border: none;
+            padding: 8px;
             font-size: 14px;
+            border-radius: 5px;
             color: #8d8d8d;
-            margin: 10px 0;
+            cursor: pointer;
+            margin: 0 5px;
         }
         #controls button#bet, #controls button#cashout {
             background-color: #4caf50;
             border: none;
-            padding: 8px 15px;
-            font-size: 14px;
+            padding: 10px;
+            font-size: 16px;
             border-radius: 5px;
             font-weight: bold;
             color: #ffffff;
             cursor: pointer;
-            width: 80%;
-            margin-top: 8px;
-            transition: background-color 0.2s;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
+            width: 100%;
+            margin-top: 10px;
         }
         #controls button#cashout {
             background-color: #e74c3c;
         }
-        #controls button#bet:hover, #controls button#cashout:hover {
+        #controls button:hover {
             background-color: #3a7e3a;
         }
     </style>
 </head>
 <body>
     <div id="header">DICEGAMBLE</div>
-
     <div id="balance-container">
-        <div id="balance-label">BALANCE</div>
-        <div id="balance-amount">$100.00</div>
+        <span id="balance-label">BALANCE</span>
+        <span id="balance-amount">$100.00</span>
     </div>
-
-    <div id="game-container">
-        <div id="status-overlay"></div>
-        <div id="game"></div>
-    </div>
-
     <div id="controls">
         <label for="betAmount">Bet Amount</label>
-        <div class="input-row">
-            <input type="number" id="betAmount" value="1" min="1" step="0.01">
-            <div class="multiplier-buttons">
-                <button id="halfBet">1/2</button>
-                <button id="doubleBet">2x</button>
-            </div>
+        <input type="number" id="betAmount" value="1" min="1" step="0.01">
+        <div class="multiplier-buttons">
+            <button id="halfBet">1/2</button>
+            <button id="doubleBet">2x</button>
         </div>
-
         <label for="mines">Mines</label>
         <input type="number" id="mines" value="3" min="1" max="24">
-
-        <div class="profit-info">
-            <span>Total profit (<span id="profit">1.00x</span>)</span>
-            <span id="profit-amount">$0.00</span>
-        </div>
         <button id="bet">BET</button>
         <button id="cashout" style="display: none;">CASH OUT</button>
+    </div>
+    <div id="game-container">
+        <div id="game"></div>
     </div>
 
     <!-- Sound effects -->
@@ -236,11 +180,15 @@
         let grid, revealed, betAmount, multiplier, mines;
         let gameActive = false;
 
-        playButton.onclick = startGame;
-        halfBetButton.onclick = () => betAmountInput.value = (betAmountInput.value / 2).toFixed(2);
-        doubleBetButton.onclick = () => betAmountInput.value = (betAmountInput.value * 2).toFixed(2);
+        renderGrid();
+
+        function updateBalance(amount) {
+            balance = amount;
+            balanceDisplay.textContent = `$${balance.toFixed(2)}`;
+        }
 
         function startGame() {
+            // Reset the overlay on new game start
             statusOverlay.classList.remove('show');
             betAmount = parseFloat(betAmountInput.value);
             mines = parseInt(minesInput.value);
@@ -275,7 +223,7 @@
         }
 
         function renderGrid() {
-            gameElement.innerHTML = ''; // Ensure the grid is cleared before rendering
+            gameElement.innerHTML = '';
             for (let row = 0; row < gameSize; row++) {
                 for (let col = 0; col < gameSize; col++) {
                     const cell = document.createElement('div');
@@ -341,10 +289,9 @@
             toggleButtons(false);
         }
 
-        function updateBalance(amount) {
-            balance = amount;
-            balanceDisplay.textContent = `$${balance.toFixed(2)}`;
-        }
+        playButton.onclick = startGame;
+        halfBetButton.onclick = () => betAmountInput.value = (betAmountInput.value / 2).toFixed(2);
+        doubleBetButton.onclick = () => betAmountInput.value = (betAmountInput.value * 2).toFixed(2);
 
         updateBalance(balance);
     </script>
