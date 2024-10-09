@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mines Game</title>
+    <style>
+        /* Basic styles for the grid and buttons */
+        body { font-family: Arial, sans-serif; text-align: center; }
+        #game { display: inline-block; margin-top: 20px; }
+        .cell { width: 40px; height: 40px; display: inline-block; margin: 2px; cursor: pointer; border: 1px solid #ccc; font-size: 24px; }
+        .mine { background-color: red; }
+        .safe { background-color: green; }
+        #controls { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Mines Game</h1>
+    <div id="game"></div>
+    <div id="controls">
+        <button id="cashout">Cash Out</button>
+    </div>
+
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+        const gameSize = 5;
+        const mineCount = 5; // Adjust mine count as needed
+        let grid = Array.from({ length: gameSize }, () => Array(gameSize).fill(false));
+        let revealed = Array.from({ length: gameSize }, () => Array(gameSize).fill(false));
+        let multiplier = 1;
+        
+        // Function to initialize the game grid with mines
+        function initGame() {
+            document.getElementById('game').innerHTML = '';
+            let mines = 0;
+            while (mines < mineCount) {
+                const row = Math.floor(Math.random() * gameSize);
+                const col = Math.floor(Math.random() * gameSize);
+                if (!grid[row][col]) {
+                    grid[row][col] = true;
+                    mines++;
+                }
+            }
+            renderGrid();
+        }
+
+        // Render the game grid
+        function renderGrid() {
+            const gameElement = document.getElementById('game');
+            for (let row = 0; row < gameSize; row++) {
+                for (let col = 0; col < gameSize; col++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.dataset.row = row;
+                    cell.dataset.col = col;
+                    cell.onclick = () => handleCellClick(row, col);
+                    gameElement.appendChild(cell);
+                }
+            }
+        }
+
+        // Handle cell click to reveal safe or mine
+        function handleCellClick(row, col) {
+            if (grid[row][col]) {
+                document.querySelector(`.cell[data-row="${row}"][data-col="${col}"]`).classList.add('mine');
+                endGame(false);
+            } else {
+                revealed[row][col] = true;
+                document.querySelector(`.cell[data-row="${row}"][data-col="${col}"]`).classList.add('safe');
+                multiplier += 0.1; // Increment multiplier for safe cells
+            }
+        }
+
+        // End the game
+        function endGame(won) {
+            document.querySelectorAll('.cell').forEach(cell => cell.onclick = null);
+            if (won) {
+                alert('You won!');
+            } else {
+                alert('You hit a mine!');
+            }
+        }
+
+        // Handle Cash Out button click
+        document.getElementById('cashout').onclick = () => {
+            Telegram.WebApp.close();
+            Telegram.WebApp.sendData(JSON.stringify({ action: 'cashout', multiplier }));
+        };
+
+        // Initialize the game when page loads
+        window.onload = initGame;
+    </script>
+</body>
+</html>
