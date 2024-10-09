@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mines Game</title>
     <style>
+        /* Overall Page Styling */
         body {
             background-color: #141414;
             font-family: Arial, sans-serif;
@@ -12,145 +13,213 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
-            min-height: 100vh;
+            justify-content: center;
+            height: 100vh;
             margin: 0;
-            padding-top: 20px;
         }
+
+        /* Header Logo */
         #header {
             color: #ffffff;
-            font-size: 24px;
+            font-size: 20px;
             margin-bottom: 10px;
             text-transform: uppercase;
             font-weight: bold;
         }
+
+        /* Balance Display */
         #balance-container {
             background-color: #1e1e1e;
             border-radius: 10px;
             padding: 5px 15px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 16px;
+            font-size: 14px;
         }
         #balance-label {
             margin-right: 5px;
             font-weight: bold;
         }
+        #balance-amount {
+            font-size: 16px;
+            color: #8d8d8d;
+        }
+
+        /* Game Grid */
         #game-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
+            position: relative;
         }
         #game {
             display: grid;
-            grid-template-columns: repeat(5, 50px);
-            gap: 10px;
-            margin-top: 20px;
+            grid-template-columns: repeat(5, 45px);
+            gap: 8px;
+            margin-bottom: 15px;
         }
         .cell {
-            width: 50px;
-            height: 50px;
+            width: 45px;
+            height: 45px;
             background-color: #2d2d2d;
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            border: 2px solid transparent;
             transition: transform 0.2s, background-color 0.2s;
         }
+        .cell img {
+            width: 70%;
+            height: 70%;
+        }
         .cell.safe {
-            background-color: transparent;
-            border-color: #1e6f1e;
+            background-color: #1e6f1e;
+            transform: scale(1.1);
         }
         .cell.mine {
-            background-color: transparent;
-            border-color: #6f1e1e;
+            background-color: #6f1e1e;
+            transform: scale(1.1);
         }
+
+        /* Status Message Overlay */
+        #status-overlay {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.85);
+            color: #ffffff;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 18px;
+            border: 2px solid #4caf50;
+            z-index: 100;
+            width: 90%;
+            max-width: 220px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+        #status-overlay.show {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Control Panel */
         #controls {
             background-color: #1e1e1e;
             border-radius: 8px;
-            padding: 15px;
-            width: 250px;
+            padding: 10px;
+            width: 100%;
+            max-width: 220px;
             text-align: center;
-            margin-bottom: 20px;
         }
         #controls label {
             display: block;
-            text-align: left;
             color: #8d8d8d;
-            margin: 10px 0 5px 0;
-            font-size: 14px;
+            margin: 6px 0;
+            font-size: 12px;
+        }
+        #controls .input-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
         }
         #controls input[type="number"] {
-            width: 100%;
-            padding: 8px;
+            width: 60%;
+            padding: 5px;
             border-radius: 5px;
             border: none;
+            font-size: 14px;
             background-color: #2d2d2d;
             color: #ffffff;
-            margin-bottom: 10px;
+            margin-right: 5px;
         }
         .multiplier-buttons {
             display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
+            gap: 5px;
         }
         .multiplier-buttons button {
-            flex: 1;
             background-color: #2d2d2d;
             border: none;
-            padding: 8px;
-            font-size: 14px;
+            padding: 5px 10px;
+            font-size: 12px;
             border-radius: 5px;
             color: #8d8d8d;
             cursor: pointer;
-            margin: 0 5px;
+            transition: background-color 0.2s;
+        }
+        .multiplier-buttons button:hover {
+            background-color: #3b3b3b;
+        }
+        #controls #mines {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        .profit-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #8d8d8d;
+            margin: 10px 0;
         }
         #controls button#bet, #controls button#cashout {
             background-color: #4caf50;
             border: none;
-            padding: 10px;
-            font-size: 16px;
+            padding: 8px 15px;
+            font-size: 14px;
             border-radius: 5px;
             font-weight: bold;
             color: #ffffff;
             cursor: pointer;
-            width: 100%;
-            margin-top: 10px;
+            width: 80%;
+            margin-top: 8px;
+            transition: background-color 0.2s;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
         }
         #controls button#cashout {
             background-color: #e74c3c;
         }
-        #controls button:hover {
+        #controls button#bet:hover, #controls button#cashout:hover {
             background-color: #3a7e3a;
         }
     </style>
 </head>
 <body>
-    <div id="header">DICEGAMBLE</div>
+    <div id="header">MINES</div>
+
     <div id="balance-container">
-        <span id="balance-label">BALANCE</span>
-        <span id="balance-amount">$100.00</span>
+        <div id="balance-label">BALANCE</div>
+        <div id="balance-amount">$100.00</div>
     </div>
+
+    <div id="game-container">
+        <div id="status-overlay"></div>
+        <div id="game"></div>
+    </div>
+
     <div id="controls">
         <label for="betAmount">Bet Amount</label>
-        <input type="number" id="betAmount" value="1" min="1" step="0.01">
-        <div class="multiplier-buttons">
-            <button id="halfBet">1/2</button>
-            <button id="doubleBet">2x</button>
+        <div class="input-row">
+            <input type="number" id="betAmount" value="1" min="1" step="0.01">
+            <div class="multiplier-buttons">
+                <button id="halfBet">1/2</button>
+                <button id="doubleBet">2x</button>
+            </div>
         </div>
+
         <label for="mines">Mines</label>
         <input type="number" id="mines" value="3" min="1" max="24">
+
+        <div class="profit-info">
+            <span>Total profit (<span id="profit">1.00x</span>)</span>
+            <span id="profit-amount">$0.00</span>
+        </div>
         <button id="bet">BET</button>
         <button id="cashout" style="display: none;">CASH OUT</button>
-    </div>
-    <div id="game-container">
-        <div id="game"></div>
     </div>
 
     <!-- Sound effects -->
