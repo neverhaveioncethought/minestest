@@ -89,14 +89,21 @@
             transform: translate(-50%, -50%);
             background-color: rgba(0, 0, 0, 0.85);
             color: #ffffff;
-            padding: 10px;
-            border-radius: 6px;
+            padding: 15px;
+            border-radius: 10px;
             text-align: center;
-            font-size: 16px;
+            font-size: 18px;
             border: 2px solid #4caf50;
-            z-index: 100; /* Ensures overlay is above grid */
-            width: 80%;
-            max-width: 200px;
+            z-index: 100;
+            width: 90%;
+            max-width: 220px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+        #status-overlay.show {
+            display: block;
+            opacity: 1;
         }
 
         /* Control Panel */
@@ -198,8 +205,8 @@
     </div>
 
     <!-- Sound effects -->
-    <audio id="safeSound" src="assets/safe.wav" volume="0.2"></audio> <!-- Set volume to 20% -->
-    <audio id="mineSound" src="asssets/mine.wav"></audio>
+    <audio id="safeSound" src="assets/safe.wav"></audio>
+    <audio id="mineSound" src="assets/mine.wav"></audio>
 
     <script>
         const balanceDisplay = document.getElementById('balance-amount');
@@ -217,8 +224,8 @@
         const safeSound = document.getElementById('safeSound');
         const mineSound = document.getElementById('mineSound');
 
-        const diamondIcon = 'assets/diamond.png'; // Place your diamond icon image here
-        const bombIcon = 'assets/bomb.png'; // Place your bomb icon image here
+        const diamondIcon = 'assets/diamond.png';
+        const bombIcon = 'assets/bomb.png';
 
         let balance = 100;
         let grid, revealed, betAmount, multiplier, mines;
@@ -263,7 +270,7 @@
         }
 
         function renderGrid() {
-            gameElement.innerHTML = ''; // Clear grid content
+            gameElement.innerHTML = '';
             for (let row = 0; row < gameSize; row++) {
                 for (let col = 0; col < gameSize; col++) {
                     const cell = document.createElement('div');
@@ -280,18 +287,23 @@
             if (grid[row][col]) {
                 cell.classList.add('mine');
                 cell.innerHTML = `<img src="${bombIcon}" alt="Mine">`;
-                mineSound.play();
+                playSound(mineSound);
                 showStatus('Game Over! You hit a mine.', true);
                 endGame(false);
             } else {
                 cell.classList.add('safe');
                 cell.innerHTML = `<img src="${diamondIcon}" alt="Safe">`;
                 revealed[row][col] = true;
-                safeSound.volume = 0.2; // Set the volume to 20%
-                safeSound.play();
+                playSound(safeSound, 0.2);
                 multiplier += 0.2;
                 updateProfit();
             }
+        }
+
+        function playSound(audioElement, volume = 1) {
+            const sound = audioElement.cloneNode(true);
+            sound.volume = volume;
+            sound.play();
         }
 
         function updateProfit() {
@@ -315,8 +327,8 @@
 
         function showStatus(message, gameOver = false) {
             statusOverlay.textContent = message;
-            statusOverlay.style.display = 'block';
-            if (gameOver) setTimeout(() => statusOverlay.style.display = 'none', 2000);
+            statusOverlay.classList.add('show');
+            if (gameOver) setTimeout(() => statusOverlay.classList.remove('show'), 2000);
         }
 
         function endGame(won) {
