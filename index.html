@@ -112,7 +112,7 @@
             border-radius: 8px;
             padding: 10px;
             width: 100%;
-            max-width: 220px;
+            max-width: 230px;
             text-align: center;
         }
         #controls label {
@@ -356,6 +356,7 @@
         };
 
         function showStatus(message, gameOver = false) {
+            statusOverlay.innerHTML = message;
             statusOverlay.textContent = message;
             statusOverlay.classList.add('show');
             if (gameOver) setTimeout(() => statusOverlay.classList.remove('show'), 2000);
