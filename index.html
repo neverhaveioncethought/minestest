@@ -21,8 +21,8 @@
         /* Header Logo */
         #header {
             color: #ffffff;
-            font-size: 24px;
-            margin-bottom: 15px;
+            font-size: 20px;
+            margin-bottom: 10px;
             text-transform: uppercase;
             font-weight: bold;
         }
@@ -31,49 +31,49 @@
         #balance-container {
             background-color: #1e1e1e;
             border-radius: 10px;
-            padding: 10px 20px;
-            margin-bottom: 20px;
+            padding: 5px 15px;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
-            font-size: 16px;
+            font-size: 14px;
         }
         #balance-label {
-            margin-right: 10px;
+            margin-right: 5px;
             font-weight: bold;
         }
         #balance-amount {
-            font-size: 18px;
+            font-size: 16px;
             color: #8d8d8d;
         }
 
         /* Game Grid */
         #game {
             display: grid;
-            grid-template-columns: repeat(5, 60px);
-            gap: 10px;
-            margin-bottom: 20px;
+            grid-template-columns: repeat(5, 45px);
+            gap: 8px;
+            margin-bottom: 15px;
         }
         .cell {
-            width: 60px;
-            height: 60px;
+            width: 45px;
+            height: 45px;
             background-color: #2d2d2d;
-            border-radius: 12px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            font-size: 20px;
-            color: #ffffff;
             transition: transform 0.2s, background-color 0.2s;
+        }
+        .cell img {
+            width: 70%;
+            height: 70%;
         }
         .cell.safe {
             background-color: #1e6f1e;
-            color: #4caf50;
             transform: scale(1.1);
         }
         .cell.mine {
             background-color: #6f1e1e;
-            color: #e74c3c;
             transform: scale(1.1);
         }
 
@@ -86,48 +86,48 @@
             transform: translate(-50%, -50%);
             background-color: rgba(0, 0, 0, 0.85);
             color: #ffffff;
-            padding: 15px;
-            border-radius: 8px;
+            padding: 10px;
+            border-radius: 6px;
             text-align: center;
-            font-size: 18px;
+            font-size: 16px;
             border: 2px solid #4caf50;
         }
 
         /* Control Panel */
         #controls {
             background-color: #1e1e1e;
-            border-radius: 10px;
-            padding: 15px;
+            border-radius: 8px;
+            padding: 10px;
             width: 100%;
-            max-width: 300px;
+            max-width: 220px;
             text-align: center;
         }
         #controls label {
             display: block;
             color: #8d8d8d;
-            margin: 8px 0;
-            font-size: 14px;
+            margin: 6px 0;
+            font-size: 12px;
         }
         #controls input[type="number"] {
-            width: calc(100% - 20px);
-            padding: 8px;
+            width: calc(100% - 15px);
+            padding: 5px;
             border-radius: 5px;
             border: none;
-            font-size: 16px;
-            margin-bottom: 15px;
+            font-size: 14px;
+            margin-bottom: 10px;
             background-color: #2d2d2d;
             color: #ffffff;
         }
         .multiplier-buttons {
             display: flex;
             justify-content: space-between;
-            margin: 10px 0;
+            margin: 5px 0;
         }
         .multiplier-buttons button {
             background-color: #2d2d2d;
             border: none;
-            padding: 8px 16px;
-            font-size: 14px;
+            padding: 5px 10px;
+            font-size: 12px;
             border-radius: 5px;
             color: #8d8d8d;
             cursor: pointer;
@@ -139,14 +139,14 @@
         #controls button#bet, #controls button#cashout {
             background-color: #4caf50;
             border: none;
-            padding: 10px 20px;
-            font-size: 16px;
+            padding: 8px 15px;
+            font-size: 14px;
             border-radius: 5px;
             font-weight: bold;
             color: #ffffff;
             cursor: pointer;
             width: 100%;
-            margin-top: 10px;
+            margin-top: 8px;
             transition: background-color 0.2s;
         }
         #controls button#cashout {
@@ -190,6 +190,10 @@
         <button id="cashout" style="display: none;">CASH OUT</button>
     </div>
 
+    <!-- Sound effects -->
+    <audio id="safeSound" src="safe.mp3"></audio>
+    <audio id="mineSound" src="mine.mp3"></audio>
+
     <script>
         const balanceDisplay = document.getElementById('balance-amount');
         const statusOverlay = document.getElementById('status-overlay');
@@ -203,6 +207,11 @@
         const playButton = document.getElementById('bet');
         const halfBetButton = document.getElementById('halfBet');
         const doubleBetButton = document.getElementById('doubleBet');
+        const safeSound = document.getElementById('safeSound');
+        const mineSound = document.getElementById('mineSound');
+
+        const diamondIcon = 'diamond.png'; // Place your diamond icon image here
+        const bombIcon = 'bomb.png'; // Place your bomb icon image here
 
         let balance = 100;
         let grid, revealed, betAmount, multiplier, mines;
@@ -264,13 +273,15 @@
         function revealCell(row, col, cell) {
             if (grid[row][col]) {
                 cell.classList.add('mine');
-                cell.innerHTML = '💣';
+                cell.innerHTML = `<img src="${bombIcon}" alt="Mine">`;
+                mineSound.play();
                 showStatus('Game Over! You hit a mine.', true);
                 endGame(false);
             } else {
                 cell.classList.add('safe');
-                cell.innerHTML = '💎';
+                cell.innerHTML = `<img src="${diamondIcon}" alt="Safe">`;
                 revealed[row][col] = true;
+                safeSound.play();
                 multiplier += 0.2;
                 updateProfit();
             }
