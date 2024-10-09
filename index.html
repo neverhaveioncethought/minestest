@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mines Game</title>
     <style>
-        /* Styling for the page */
+        /* Overall Page Styling */
         body {
             background-color: #2a2a2a;
             font-family: Arial, sans-serif;
-            color: #f1f1f1;
+            color: #ffffff;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -17,92 +17,151 @@
         }
         h1 {
             color: #ffffff;
+            margin: 10px;
         }
-        #balance {
-            background-color: #333333;
-            color: #ffde00;
-            padding: 10px 20px;
-            font-size: 20px;
-            border-radius: 20px;
+
+        /* Header Logo */
+        #header {
+            color: #ffffff;
+            font-size: 24px;
             margin-bottom: 20px;
-            text-align: center;
         }
+
+        /* Balance Display */
+        #balance-container {
+            background-color: #3d3d3d;
+            border-radius: 25px;
+            padding: 10px 30px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            font-size: 18px;
+        }
+        #balance-label {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        #balance-amount {
+            font-size: 22px;
+            color: #cccccc;
+        }
+
+        /* Game Grid */
         #game {
             display: grid;
             grid-template-columns: repeat(5, 60px);
             gap: 10px;
+            margin-bottom: 20px;
         }
         .cell {
             width: 60px;
             height: 60px;
-            background-color: #b3995d;
+            background-color: #5e5e5e;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 10px;
             cursor: pointer;
             font-size: 24px;
             font-weight: bold;
             transition: background-color 0.3s ease;
         }
-        .cell.mine { background-color: #d9534f; }
-        .cell.safe { background-color: #5cb85c; }
+        .cell.mine {
+            background-color: #a83232;
+        }
+        .cell.safe {
+            background-color: #4d8a4d;
+        }
+
+        /* Control Panel */
         #controls {
-            background-color: #333333;
-            border-radius: 10px;
-            padding: 15px;
+            background-color: #3d3d3d;
+            border-radius: 15px;
+            padding: 20px;
             width: 100%;
             max-width: 400px;
-            margin-top: 20px;
             text-align: center;
         }
-        #controls label, #controls input, #controls button {
-            color: #ffffff;
+        #controls label {
+            display: block;
+            color: #cccccc;
             margin: 5px 0;
+            text-align: left;
         }
-        input[type="number"] {
-            width: 100%;
+        #controls input[type="number"] {
+            width: calc(100% - 10px);
             padding: 8px;
             border-radius: 5px;
             border: none;
             font-size: 16px;
+            margin-bottom: 10px;
+            background-color: #5e5e5e;
+            color: #ffffff;
         }
-        button {
-            background-color: #ffde00;
+        .multiplier-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+        }
+        .multiplier-buttons button {
+            background-color: #5e5e5e;
             border: none;
-            padding: 10px 20px;
+            padding: 8px 16px;
             font-size: 16px;
             border-radius: 5px;
+            color: #ffffff;
             cursor: pointer;
-            font-weight: bold;
-            margin-top: 10px;
         }
-        button:hover {
-            background-color: #e6c700;
+        #controls #profit, #controls #profit-amount {
+            font-size: 16px;
+            color: #cccccc;
+        }
+        #controls button#bet, #controls button#cashout {
+            background-color: #5e5e5e;
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            border-radius: 10px;
+            font-weight: bold;
+            color: #ffffff;
+            cursor: pointer;
+            width: 100%;
+        }
+        #controls button:hover {
+            background-color: #4b4b4b;
         }
     </style>
 </head>
 <body>
-    <h1>DiceGamble</h1>
-    <div id="balance">
-        Balance: $<span id="balance-amount">100.00</span>
-    </div>
-    
-    <div id="game"></div>
-    
-    <div id="controls">
-        <label for="betAmount">Bet Amount:</label>
-        <input type="number" id="betAmount" value="1" min="1" step="0.01">
-        <label for="mines">Mines:</label>
-        <input type="number" id="mines" value="3" min="1" max="24">
-        <div>
-            Total Profit: <span id="profit">1.00x</span> ($<span id="profit-amount">0.00</span>)
-        </div>
-        <button id="play">Play</button>
-        <button id="cashout">Cash Out</button>
+    <div id="header">DICEGAMBLE</div>
+
+    <div id="balance-container">
+        <div id="balance-label">BALANCE</div>
+        <div id="balance-amount">$0.00</div>
     </div>
 
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <div id="game"></div>
+
+    <div id="controls">
+        <label for="betAmount">Bet Amount</label>
+        <input type="number" id="betAmount" value="1" min="1" step="0.01">
+
+        <div class="multiplier-buttons">
+            <button id="halfBet">1/2</button>
+            <button id="doubleBet">2x</button>
+        </div>
+
+        <label for="mines">Mines</label>
+        <input type="number" id="mines" value="3" min="1" max="24">
+
+        <div>
+            <span>Total profit (<span id="profit">1.00x</span>)</span>
+            <div id="profit-amount">$0.00</div>
+        </div>
+        <button id="bet">BET</button>
+        <button id="cashout" style="display: none;">CASH OUT</button>
+    </div>
+
     <script>
         const balanceDisplay = document.getElementById('balance-amount');
         const profitDisplay = document.getElementById('profit');
@@ -112,11 +171,19 @@
         const betAmountInput = document.getElementById('betAmount');
         const minesInput = document.getElementById('mines');
         const cashOutButton = document.getElementById('cashout');
-        const playButton = document.getElementById('play');
+        const playButton = document.getElementById('bet');
+        const halfBetButton = document.getElementById('halfBet');
+        const doubleBetButton = document.getElementById('doubleBet');
 
-        let grid, revealed, balance = 100, betAmount, multiplier, mines;
+        let balance = 100;
+        let grid, revealed, betAmount, multiplier, mines;
 
-        playButton.onclick = () => {
+        function updateBalance(amount) {
+            balance = amount;
+            balanceDisplay.textContent = `$${balance.toFixed(2)}`;
+        }
+
+        function startGame() {
             if (betAmountInput.value <= 0 || betAmountInput.value > balance) {
                 alert('Invalid bet amount');
                 return;
@@ -125,17 +192,13 @@
             betAmount = parseFloat(betAmountInput.value);
             mines = parseInt(minesInput.value);
             balance -= betAmount;
-            balanceDisplay.textContent = balance.toFixed(2);
+            updateBalance(balance);
 
-            startGame();
-        };
-
-        function startGame() {
-            gameElement.innerHTML = '';
-            multiplier = 1;
+            // Initialize the grid
             grid = Array.from({ length: gameSize }, () => Array(gameSize).fill(false));
             revealed = Array.from({ length: gameSize }, () => Array(gameSize).fill(false));
 
+            // Place mines
             let minesPlaced = 0;
             while (minesPlaced < mines) {
                 const row = Math.floor(Math.random() * gameSize);
@@ -146,6 +209,14 @@
                 }
             }
 
+            multiplier = 1;
+            updateProfit();
+            renderGrid();
+            toggleButtons(true);
+        }
+
+        function renderGrid() {
+            gameElement.innerHTML = '';
             for (let row = 0; row < gameSize; row++) {
                 for (let col = 0; col < gameSize; col++) {
                     const cell = document.createElement('div');
@@ -154,9 +225,6 @@
                     gameElement.appendChild(cell);
                 }
             }
-
-            cashOutButton.style.display = 'block';
-            playButton.style.display = 'none';
         }
 
         function revealCell(row, col, cell) {
@@ -164,8 +232,8 @@
                 cell.classList.add('mine');
                 endGame(false);
             } else {
-                revealed[row][col] = true;
                 cell.classList.add('safe');
+                revealed[row][col] = true;
                 multiplier += 0.2;
                 updateProfit();
             }
@@ -174,29 +242,33 @@
         function updateProfit() {
             const profit = betAmount * multiplier;
             profitDisplay.textContent = `${multiplier.toFixed(2)}x`;
-            profitAmountDisplay.textContent = profit.toFixed(2);
+            profitAmountDisplay.textContent = `$${profit.toFixed(2)}`;
+        }
+
+        function toggleButtons(gameActive) {
+            playButton.style.display = gameActive ? 'none' : 'block';
+            cashOutButton.style.display = gameActive ? 'block' : 'none';
         }
 
         cashOutButton.onclick = () => {
-            balance += betAmount * multiplier;
-            balanceDisplay.textContent = balance.toFixed(2);
+            const profit = betAmount * multiplier;
+            balance += profit;
+            updateBalance(balance);
             alert(`Cashed out with ${multiplier.toFixed(2)}x multiplier!`);
-            resetGame();
+            toggleButtons(false);
         };
 
         function endGame(won) {
-            cashOutButton.style.display = 'none';
-            playButton.style.display = 'block';
+            toggleButtons(false);
             alert(won ? 'You win!' : 'You hit a mine!');
-            resetGame();
         }
 
-        function resetGame() {
-            multiplier = 1;
-            updateProfit();
-        }
+        playButton.onclick = startGame;
+        halfBetButton.onclick = () => betAmountInput.value = (betAmountInput.value / 2).toFixed(2);
+        doubleBetButton.onclick = () => betAmountInput.value = (betAmountInput.value * 2).toFixed(2);
 
-        resetGame();
+        // Set initial balance
+        updateBalance(balance);
     </script>
 </body>
 </html>
