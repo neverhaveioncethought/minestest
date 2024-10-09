@@ -11,6 +11,16 @@
                  url('fonts/Gilroy-Regular.woff') format('woff');
         }
 
+        input[type-number]::-webkit-out-spin-button,
+        input[type-number]::-webkit-out-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type-number] {
+            -moz-appearance: textfield;
+        }
+
         /* Overall Page Styling */
         body {
             background-color: #141414;
@@ -188,7 +198,7 @@
             font-weight: bold;
             color: #ffffff;
             cursor: pointer;
-            width: 80%;
+            width: 50%;
             margin-top: 8px;
             transition: background-color 0.2s;
             display: block;
