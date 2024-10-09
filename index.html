@@ -351,7 +351,7 @@
             const profit = betAmount * multiplier;
             balance += profit;
             updateBalance(balance);
-            showStatus(`Multiplier: ${multiplier.toFixed(2)}x Cashed out: $${profit.toFixed(2)}`);
+            showStatus(`Multiplier: ${multiplier.toFixed(2)}x<br><br/>Cashed out: $${profit.toFixed(2)}`);
             toggleButtons(false);
         };
 
