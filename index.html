@@ -13,87 +13,104 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
+            padding: 10px;
         }
         h1 {
             color: #ffffff;
-            margin: 10px;
+            margin: 5px;
+            font-size: 18px;
         }
 
         /* Header Logo */
         #header {
             color: #ffffff;
-            font-size: 24px;
-            margin-bottom: 20px;
+            font-size: 18px;
+            margin-bottom: 15px;
         }
 
         /* Balance Display */
         #balance-container {
             background-color: #3d3d3d;
-            border-radius: 25px;
-            padding: 10px 30px;
-            margin-bottom: 20px;
+            border-radius: 15px;
+            padding: 5px 15px;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
-            font-size: 18px;
+            font-size: 14px;
         }
         #balance-label {
-            margin-right: 10px;
+            margin-right: 5px;
             font-weight: bold;
         }
         #balance-amount {
-            font-size: 22px;
+            font-size: 16px;
             color: #cccccc;
         }
 
         /* Game Grid */
         #game {
             display: grid;
-            grid-template-columns: repeat(5, 60px);
-            gap: 10px;
-            margin-bottom: 20px;
+            grid-template-columns: repeat(5, 40px);
+            gap: 5px;
+            margin-bottom: 10px;
         }
         .cell {
-            width: 60px;
-            height: 60px;
+            width: 40px;
+            height: 40px;
             background-color: #5e5e5e;
-            border-radius: 10px;
+            border-radius: 5px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            font-size: 24px;
+            font-size: 18px;
             font-weight: bold;
             transition: background-color 0.3s ease;
         }
         .cell.mine {
+            animation: shake 0.3s;
             background-color: #a83232;
         }
         .cell.safe {
             background-color: #4d8a4d;
         }
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            25% { transform: translate(-1px, -2px) rotate(-1deg); }
+            50% { transform: translate(-3px, 0px) rotate(1deg); }
+            75% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -1px) rotate(-1deg); }
+        }
+
+        /* Status Message */
+        #status {
+            font-size: 14px;
+            margin-bottom: 10px;
+            color: #ffde00;
+        }
 
         /* Control Panel */
         #controls {
             background-color: #3d3d3d;
-            border-radius: 15px;
-            padding: 20px;
+            border-radius: 10px;
+            padding: 10px;
             width: 100%;
-            max-width: 400px;
+            max-width: 250px;
             text-align: center;
         }
         #controls label {
             display: block;
             color: #cccccc;
-            margin: 5px 0;
+            margin: 3px 0;
+            font-size: 12px;
             text-align: left;
         }
         #controls input[type="number"] {
             width: calc(100% - 10px);
-            padding: 8px;
+            padding: 5px;
             border-radius: 5px;
             border: none;
-            font-size: 16px;
+            font-size: 14px;
             margin-bottom: 10px;
             background-color: #5e5e5e;
             color: #ffffff;
@@ -101,31 +118,32 @@
         .multiplier-buttons {
             display: flex;
             justify-content: space-between;
-            margin-top: 5px;
+            margin-top: 3px;
         }
         .multiplier-buttons button {
             background-color: #5e5e5e;
             border: none;
-            padding: 8px 16px;
-            font-size: 16px;
+            padding: 5px 10px;
+            font-size: 12px;
             border-radius: 5px;
             color: #ffffff;
             cursor: pointer;
         }
         #controls #profit, #controls #profit-amount {
-            font-size: 16px;
+            font-size: 12px;
             color: #cccccc;
         }
         #controls button#bet, #controls button#cashout {
             background-color: #5e5e5e;
             border: none;
-            padding: 10px 20px;
-            font-size: 18px;
-            border-radius: 10px;
+            padding: 7px 15px;
+            font-size: 14px;
+            border-radius: 8px;
             font-weight: bold;
             color: #ffffff;
             cursor: pointer;
             width: 100%;
+            margin-top: 5px;
         }
         #controls button:hover {
             background-color: #4b4b4b;
@@ -137,8 +155,10 @@
 
     <div id="balance-container">
         <div id="balance-label">BALANCE</div>
-        <div id="balance-amount">$0.00</div>
+        <div id="balance-amount">$100.00</div>
     </div>
+
+    <div id="status">Start the game by placing a bet.</div>
 
     <div id="game"></div>
 
@@ -164,6 +184,7 @@
 
     <script>
         const balanceDisplay = document.getElementById('balance-amount');
+        const statusDisplay = document.getElementById('status');
         const profitDisplay = document.getElementById('profit');
         const profitAmountDisplay = document.getElementById('profit-amount');
         const gameSize = 5;
@@ -185,7 +206,7 @@
 
         function startGame() {
             if (betAmountInput.value <= 0 || betAmountInput.value > balance) {
-                alert('Invalid bet amount');
+                statusDisplay.textContent = 'Invalid bet amount';
                 return;
             }
 
@@ -194,11 +215,12 @@
             balance -= betAmount;
             updateBalance(balance);
 
-            // Initialize the grid
+            statusDisplay.textContent = `Game started with ${mines} mines. Good luck!`;
+            multiplier = 1;
+            updateProfit();
+
             grid = Array.from({ length: gameSize }, () => Array(gameSize).fill(false));
             revealed = Array.from({ length: gameSize }, () => Array(gameSize).fill(false));
-
-            // Place mines
             let minesPlaced = 0;
             while (minesPlaced < mines) {
                 const row = Math.floor(Math.random() * gameSize);
@@ -209,8 +231,6 @@
                 }
             }
 
-            multiplier = 1;
-            updateProfit();
             renderGrid();
             toggleButtons(true);
         }
@@ -230,9 +250,12 @@
         function revealCell(row, col, cell) {
             if (grid[row][col]) {
                 cell.classList.add('mine');
+                cell.innerHTML = '💣';
+                statusDisplay.textContent = 'Game Over! You hit a mine.';
                 endGame(false);
             } else {
                 cell.classList.add('safe');
+                cell.innerHTML = '✔️';
                 revealed[row][col] = true;
                 multiplier += 0.2;
                 updateProfit();
@@ -254,20 +277,18 @@
             const profit = betAmount * multiplier;
             balance += profit;
             updateBalance(balance);
-            alert(`Cashed out with ${multiplier.toFixed(2)}x multiplier!`);
+            statusDisplay.textContent = `Cashed out at ${multiplier.toFixed(2)}x for $${profit.toFixed(2)}.`;
             toggleButtons(false);
         };
 
         function endGame(won) {
             toggleButtons(false);
-            alert(won ? 'You win!' : 'You hit a mine!');
         }
 
         playButton.onclick = startGame;
         halfBetButton.onclick = () => betAmountInput.value = (betAmountInput.value / 2).toFixed(2);
         doubleBetButton.onclick = () => betAmountInput.value = (betAmountInput.value * 2).toFixed(2);
 
-        // Set initial balance
         updateBalance(balance);
     </script>
 </body>
