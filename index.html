@@ -153,10 +153,21 @@
         .multiplier-buttons button:hover {
             background-color: #3b3b3b;
         }
+        #controls #mines {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        .profit-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #8d8d8d;
+            margin: 10px 0;
+        }
         #controls button#bet, #controls button#cashout {
             background-color: #4caf50;
             border: none;
-            padding: 5px 10px;
+            padding: 8px 15px;
             font-size: 14px;
             border-radius: 5px;
             font-weight: bold;
@@ -165,6 +176,9 @@
             width: 80%;
             margin-top: 8px;
             transition: background-color 0.2s;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
         }
         #controls button#cashout {
             background-color: #e74c3c;
@@ -200,9 +214,9 @@
         <label for="mines">Mines</label>
         <input type="number" id="mines" value="3" min="1" max="24">
 
-        <div>
+        <div class="profit-info">
             <span>Total profit (<span id="profit">1.00x</span>)</span>
-            <div id="profit-amount">$0.00</div>
+            <span id="profit-amount">$0.00</span>
         </div>
         <button id="bet">BET</button>
         <button id="cashout" style="display: none;">CASH OUT</button>
