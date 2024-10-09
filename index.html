@@ -318,7 +318,7 @@
                 cell.classList.add('mine');
                 cell.innerHTML = `<img src="${bombIcon}" alt="Mine">`;
                 playSound(mineSound);
-                showStatus('Game Over! You hit a mine.', true);
+                showStatus('Game Over!', true);
                 endGame(false);
             } else {
                 cell.classList.add('safe');
@@ -351,7 +351,7 @@
             const profit = betAmount * multiplier;
             balance += profit;
             updateBalance(balance);
-            showStatus(`Cashed out at ${multiplier.toFixed(2)}x for $${profit.toFixed(2)}.`);
+            showStatus(`${multiplier.toFixed(2)}x\n$${profit.toFixed(2)}.`);
             toggleButtons(false);
         };
 
