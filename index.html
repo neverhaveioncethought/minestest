@@ -59,25 +59,25 @@
         .cell {
             width: 45px;
             height: 45px;
-            background-color: #2d2d2d;
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: transform 0.2s, background-color 0.2s;
+            border: 2px solid transparent; /* For the outline effect */
         }
         .cell img {
             width: 70%;
             height: 70%;
         }
         .cell.safe {
-            background-color: #1e6f1e;
-            transform: scale(1.1);
+            background-color: transparent;
+            border-color: #1e6f1e;
         }
         .cell.mine {
-            background-color: #6f1e1e;
-            transform: scale(1.1);
+            background-color: transparent;
+            border-color: #6f1e1e;
         }
 
         /* Status Message Overlay */
@@ -118,8 +118,9 @@
         #controls label {
             display: block;
             color: #8d8d8d;
-            margin: 6px 0;
+            margin: 6px 0 3px 5px;
             font-size: 12px;
+            text-align: left;
         }
         #controls .input-row {
             display: flex;
@@ -154,7 +155,13 @@
             background-color: #3b3b3b;
         }
         #controls #mines {
-            width: 100%;
+            width: calc(100% - 10px); /* Less width to add padding */
+            padding: 5px;
+            border-radius: 5px;
+            border: none;
+            font-size: 14px;
+            background-color: #2d2d2d;
+            color: #ffffff;
             margin-bottom: 10px;
         }
         .profit-info {
@@ -189,7 +196,7 @@
     </style>
 </head>
 <body>
-    <div id="header">MINES</div>
+    <div id="header">DICEGAMBLE</div>
 
     <div id="balance-container">
         <div id="balance-label">BALANCE</div>
@@ -257,7 +264,6 @@
         }
 
         function startGame() {
-            // Reset the overlay on new game start
             statusOverlay.classList.remove('show');
             betAmount = parseFloat(betAmountInput.value);
             mines = parseInt(minesInput.value);
