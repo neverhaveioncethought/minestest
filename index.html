@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mines Game</title>
     <style>
-        /* Overall Page Styling */
         body {
             background-color: #141414;
             font-family: Arial, sans-serif;
@@ -17,8 +16,6 @@
             height: 100vh;
             margin: 0;
         }
-
-        /* Header Logo */
         #header {
             color: #ffffff;
             font-size: 20px;
@@ -26,8 +23,6 @@
             text-transform: uppercase;
             font-weight: bold;
         }
-
-        /* Balance Display */
         #balance-container {
             background-color: #1e1e1e;
             border-radius: 10px;
@@ -45,8 +40,6 @@
             font-size: 16px;
             color: #8d8d8d;
         }
-
-        /* Game Grid */
         #game-container {
             position: relative;
         }
@@ -64,12 +57,8 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
+            border: 2px solid transparent;
             transition: transform 0.2s, background-color 0.2s;
-            border: 2px solid transparent; /* For the outline effect */
-        }
-        .cell img {
-            width: 70%;
-            height: 70%;
         }
         .cell.safe {
             background-color: transparent;
@@ -79,8 +68,6 @@
             background-color: transparent;
             border-color: #6f1e1e;
         }
-
-        /* Status Message Overlay */
         #status-overlay {
             display: none;
             position: absolute;
@@ -105,8 +92,6 @@
             display: block;
             opacity: 1;
         }
-
-        /* Control Panel */
         #controls {
             background-color: #1e1e1e;
             border-radius: 8px;
@@ -121,11 +106,6 @@
             margin: 6px 0 3px 5px;
             font-size: 12px;
             text-align: left;
-        }
-        #controls .input-row {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
         }
         #controls input[type="number"] {
             width: 60%;
@@ -155,7 +135,7 @@
             background-color: #3b3b3b;
         }
         #controls #mines {
-            width: calc(100% - 10px); /* Less width to add padding */
+            width: calc(100% - 10px);
             padding: 5px;
             border-radius: 5px;
             border: none;
@@ -256,12 +236,9 @@
         let grid, revealed, betAmount, multiplier, mines;
         let gameActive = false;
 
-        renderGrid();
-
-        function updateBalance(amount) {
-            balance = amount;
-            balanceDisplay.textContent = `$${balance.toFixed(2)}`;
-        }
+        playButton.onclick = startGame;
+        halfBetButton.onclick = () => betAmountInput.value = (betAmountInput.value / 2).toFixed(2);
+        doubleBetButton.onclick = () => betAmountInput.value = (betAmountInput.value * 2).toFixed(2);
 
         function startGame() {
             statusOverlay.classList.remove('show');
@@ -298,7 +275,7 @@
         }
 
         function renderGrid() {
-            gameElement.innerHTML = '';
+            gameElement.innerHTML = ''; // Ensure the grid is cleared before rendering
             for (let row = 0; row < gameSize; row++) {
                 for (let col = 0; col < gameSize; col++) {
                     const cell = document.createElement('div');
@@ -364,9 +341,10 @@
             toggleButtons(false);
         }
 
-        playButton.onclick = startGame;
-        halfBetButton.onclick = () => betAmountInput.value = (betAmountInput.value / 2).toFixed(2);
-        doubleBetButton.onclick = () => betAmountInput.value = (betAmountInput.value * 2).toFixed(2);
+        function updateBalance(amount) {
+            balance = amount;
+            balanceDisplay.textContent = `$${balance.toFixed(2)}`;
+        }
 
         updateBalance(balance);
     </script>
