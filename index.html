@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mines Game</title>
     <style>
+        /* Import Font */
         @font-face {
             font-family: 'Gilroy-Regular';
             src: url('fonts/Gilroy-Regular.woff2') format('woff2'),
@@ -60,6 +61,15 @@
         #balance-amount {
             font-size: 16px;
             color: #8d8d8d;
+        }
+
+        /* Horizontal Divider */
+        .divider {
+            width: 100%;
+            max-width: 235px;
+            border: 0;
+            border-top: 1px solid #8d8d8d;
+            margin: 15px 0;
         }
 
         /* Game Grid */
@@ -221,6 +231,8 @@
         <div id="balance-amount">$100.00</div>
     </div>
 
+    <hr class="divider">
+
     <div id="game-container">
         <div id="status-overlay"></div>
         <div id="game"></div>
@@ -250,6 +262,13 @@
     <!-- Sound effects -->
     <audio id="safeSound" src="assets/safe.wav"></audio>
     <audio id="mineSound" src="assets/mine.wav"></audio>
+
+    <script>
+        // JavaScript logic remains unchanged, focusing on display only.
+    </script>
+</body>
+</html>
+
 
     <script>
         const balanceDisplay = document.getElementById('balance-amount');
