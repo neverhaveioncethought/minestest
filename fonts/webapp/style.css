@@ -1,0 +1,161 @@
+body {
+    font-family: 'Comic Sans MS', sans-serif;
+    background-color: #ffcccb;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.game-container {
+    text-align: center;
+    background-color: #f0e68c;
+    border: 5px solid #ff6347;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+}
+
+.game-title {
+    color: #ff6347;
+    font-size: 2em;
+}
+
+.betting-section {
+    margin: 20px 0;
+}
+
+input[type="number"] {
+    padding: 5px;
+    margin: 5px;
+    border: 2px solid #ff6347;
+    border-radius: 5px;
+}
+
+/* Flash animation */
+@keyframes flash {
+    0% { background-color: #f0e68c; }
+    50% { background-color: #ffff00; }
+    100% { background-color: #f0e68c; }
+}
+
+.flash {
+    animation: flash 0.5s;
+}
+
+/* Multiplier animation */
+@keyframes scaleUp {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.5); }
+    100% { transform: scale(1); }
+}
+
+.cashout-animate {
+    animation: scaleUp 0.7s;
+}
+
+/* Confetti animation */
+@keyframes confetti {
+    0% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(100vh); }
+}
+
+.confetti {
+    position: absolute;
+    top: 0;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    opacity: 0;
+    animation: confetti 2s ease-out forwards;
+}
+
+button {
+    padding: 5px 10px;
+    margin: 5px;
+    background-color: #ff6347;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
+}
+
+.balance-section {
+    font-size: 1.2em;
+    margin-bottom: 15px;
+    color: #ff6347;
+}
+
+.chart-section {
+    position: relative;
+    height: 200px;
+    width: 100%;
+    border: 2px solid #ff6347;
+    border-radius: 5px;
+    background-color: #ffffff;
+    overflow: hidden;
+}
+
+#chart-grid {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        to top,
+        transparent,
+        transparent 20px,
+        rgba(0, 0, 0, 0.1) 21px
+    );
+}
+
+#chart-line {
+    position: absolute;
+    width: 3px;
+    height: 0;
+    background-color: green;
+    transition: height 0.2s linear;
+}
+
+#multiplier {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 1.5em;
+    color: blue;
+}
+
+#crash-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2em;
+    color: red;
+    font-weight: bold;
+}
+
+#congratulations {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2em;
+    color: #32cd32;
+    font-weight: bold;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 10px 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    display: none;
+}
+
+
+.hidden {
+    display: none;
+}
