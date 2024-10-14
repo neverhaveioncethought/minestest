@@ -8,30 +8,28 @@
 </head>
 <body>
     <div class="game-container">
-        <h1 class="game-title">Crash Game</h1>
-        <div class="balance-section">
-            <p>Balance: $<span id="balance">1000</span></p>
-        </div>
-        <div class="betting-section">
-            <label for="bet">Place your Bet:</label>
-            <input type="number" id="bet" placeholder="Bet Amount">
-            <button id="placeBet">Place Bet</button>
-            <button id="cashOut" class="hidden">Cash Out</button>
+        <div class="bet-section">
+            <div class="bet-options">
+                <label>Amount:</label>
+                <input type="number" id="bet" placeholder="0.00">
+                <div class="bet-buttons">
+                    <button>½</button>
+                    <button>2x</button>
+                </div>
+                <label>Cashout At:</label>
+                <input type="number" id="cashoutAt" placeholder="2.00">
+            </div>
+            <div class="net-gain">
+                <p>Net Gain on Win: <span id="netGain">0.00</span></p>
+            </div>
+            <button id="placeBet" class="play-button">Play (Next Round)</button>
         </div>
         <div class="chart-section">
-            <div id="chart-grid"></div>
             <div id="chart-line"></div>
-            <div id="multiplier">1x</div>
-            <div id="crash-message" class="hidden">X CRASHED!</div>
+            <div id="multiplier" class="crash-multiplier">1.0x</div>
+            <div id="crash-message" class="hidden">Crashed</div>
         </div>
-        <div id="confetti-container">
-            <div class="confetti"></div>
-            <div class="confetti"></div>
-            <!-- Repeat as needed -->
-        </div>
-        <div id="congratulations" class="hidden">Congratulations! 🎉</div>        
     </div>
-    <audio id="click-sound" src="sounds/click.wav"></audio>
     <script src="script.js"></script>
 </body>
 </html>
